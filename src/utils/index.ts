@@ -42,8 +42,12 @@ export const sanitizeEmail = (email: string): string => {
 };
 
 export const validateEmail = (email: string): boolean => {
+
     if (!email) return false;
-    const regex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{3})+$/;
+
+    // Modified regex to accept emails with extension .it and .br
+    //const regex = /^[\w.-]+@[a-zA-Z0-9.-]+\.(com|net|org|it|br)$/; BEFORE
+    const regex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{3})+$/; // AFTER
     const sanitizedEmail = email.trim().toLowerCase();
     const result = sanitizedEmail.match(regex);
     return !!result?.[0];
