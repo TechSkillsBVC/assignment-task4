@@ -21,43 +21,43 @@ describe('Login Component', () => {
     });
 
     test('renders correctly', () => {
-//         const { getByText } = render(
-//             <AuthenticationContext.Provider value={mockAuthenticationContext}>
-//                 <Login navigation={mockNavigation} />
-//             </AuthenticationContext.Provider>
-//         );
+        const { getByText } = render(
+            <AuthenticationContext.Provider value={mockAuthenticationContext}>
+                <Login navigation={mockNavigation} />
+            </AuthenticationContext.Provider>
+        );
 
-//         expect(getByText('Email')).toBeTruthy();
-//         expect(getByText('Password')).toBeTruthy();
-//         expect(getByText('Log in')).toBeTruthy();
+        expect(getByText('Email')).toBeTruthy();
+        expect(getByText('Password')).toBeTruthy();
+        expect(getByText('Log in')).toBeTruthy();
     });
 
     test('displays error message for invalid email', async () => {
-//         const { getByLabelText, getByText } = render(
-//             <AuthenticationContext.Provider value={mockAuthenticationContext}>
-//                 <Login navigation={mockNavigation} />
-//             </AuthenticationContext.Provider>
-//         );
+        const { getByLabelText, getByText } = render(
+            <AuthenticationContext.Provider value={mockAuthenticationContext}>
+                <Login navigation={mockNavigation} />
+            </AuthenticationContext.Provider>
+        );
 
-//         fireEvent.changeText(getByLabelText('Email'), 'invalid-email');
-//         fireEvent.endEditing(getByLabelText('Email'));
+        fireEvent.changeText(getByLabelText('Email'), 'invalid-email');
+        fireEvent.endEditing(getByLabelText('Email'));
 
-        // Assume error message is displayed
-        //expect(getByText('Invalid email')).toBeTruthy();
+        Assume error message is displayed
+        expect(getByText('Invalid email')).toBeTruthy();
     });
 
     test('displays error message for invalid password', async () => {
-//         const { getByLabelText, getByText } = render(
-//             <AuthenticationContext.Provider value={mockAuthenticationContext}>
-//                 <Login navigation={mockNavigation} />
-//             </AuthenticationContext.Provider>
-//         );
-//
-//         fireEvent.changeText(getByLabelText('Password'), '123');
-//         fireEvent.endEditing(getByLabelText('Password'));
-//
-//         // Assume error message is displayed
-//         expect(getByText('Invalid password')).toBeTruthy();
+        const { getByLabelText, getByText } = render(
+            <AuthenticationContext.Provider value={mockAuthenticationContext}>
+                <Login navigation={mockNavigation} />
+            </AuthenticationContext.Provider>
+        );
+
+        fireEvent.changeText(getByLabelText('Password'), '123');
+        fireEvent.endEditing(getByLabelText('Password'));
+
+        // Assume error message is displayed
+        expect(getByText('Invalid password')).toBeTruthy();
     });
 
     test('calls authenticateUser on valid input', async () => {
@@ -68,22 +68,22 @@ describe('Login Component', () => {
             },
         });
 
-//         const { getByLabelText, getByText } = render(
-//             <AuthenticationContext.Provider value={mockAuthenticationContext}>
-//                 <Login navigation={mockNavigation} />
-//             </AuthenticationContext.Provider>
-//         );
+        const { getByLabelText, getByText } = render(
+            <AuthenticationContext.Provider value={mockAuthenticationContext}>
+                <Login navigation={mockNavigation} />
+            </AuthenticationContext.Provider>
+        );
 
-//         fireEvent.changeText(getByLabelText('Email'), 'test@example.com');
-//         fireEvent.changeText(getByLabelText('Password'), 'password123');
-//
-//         fireEvent.press(getByText('Log in'));
+        fireEvent.changeText(getByLabelText('Email'), 'test@example.com');
+        fireEvent.changeText(getByLabelText('Password'), 'password123');
 
-//         await waitFor(() => {
-//             expect('test@example.com', 'password123').toHaveBeenCalledWith('test@example.com', 'password123');
-//             //expect(id: 1, name: 'Test User').toHaveBeenCalledWith({ id: 1, name: 'Test User' });
-//             expect('EventsMap').toHaveBeenCalledWith('EventsMap');
-//         });
+        fireEvent.press(getByText('Log in'));
+
+        await waitFor(() => {
+            expect('test@example.com', 'password123').toHaveBeenCalledWith('test@example.com', 'password123');
+            //expect(id: 1, name: 'Test User').toHaveBeenCalledWith({ id: 1, name: 'Test User' });
+            expect('EventsMap').toHaveBeenCalledWith('EventsMap');
+        });
     });
 
     test('shows authentication error message on failed login', async () => {
@@ -91,19 +91,19 @@ describe('Login Component', () => {
             response: { data: 'Invalid credentials' },
         });
 
-//         const { getByLabelText, getByText } = render(
-//             <AuthenticationContext.Provider value={mockAuthenticationContext}>
-//                 <Login navigation={mockNavigation} />
-//             </AuthenticationContext.Provider>
-//         );
+        const { getByLabelText, getByText } = render(
+            <AuthenticationContext.Provider value={mockAuthenticationContext}>
+                <Login navigation={mockNavigation} />
+            </AuthenticationContext.Provider>
+        );
 
-//         fireEvent.changeText(getByLabelText('Email'), 'test@example.com');
-//         fireEvent.changeText(getByLabelText('Password'), 'wrongpassword');
+        fireEvent.changeText(getByLabelText('Email'), 'test@example.com');
+        fireEvent.changeText(getByLabelText('Password'), 'wrongpassword');
 
-//         fireEvent.press(getByText('Log in'));
+        fireEvent.press(getByText('Log in'));
 
-//         await waitFor(() => {
-//             expect(getByText('Invalid credentials')).toBeTruthy();
-//         });
+        await waitFor(() => {
+            expect(getByText('Invalid credentials')).toBeTruthy();
+        });
     });
 });
