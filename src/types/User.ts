@@ -4,6 +4,8 @@ export interface User {
         last: string;
     };
     email: string;
+     password: string;
     id: string;
+
     mobile: string;
 }

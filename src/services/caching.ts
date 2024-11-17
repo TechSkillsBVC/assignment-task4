@@ -1,5 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
+
 export const getFromNetworkFirst = async <T>(key: string, request: Promise<T>): Promise<T> => {
     try {
         const response = await request;
