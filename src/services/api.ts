@@ -11,9 +11,27 @@ const api = axios.create({
     //
     // To use `my-json-server`, make sure your `db.json` is located at the repo root.
 
-    baseURL: 'http://0.0.0.0:3333',
+    baseURL: 'http://10.0.0.119:3333',
 });
 
 export const authenticateUser = (email: string, password: string): Promise<AxiosResponse> => {
-    return api.post(`/login`, { email, password });
+
+    //  return api.post(`/login`, { email, password }); 
+    
+    
+    // NOTE:
+// The login functionality may not work correctly due to potential issues 
+// with how the passwords are being stored or hashed. Specifically:
+// - The stored password hash might be incorrectly generated or stored in the database.
+// - The hashing process used for comparing the entered password might not match the stored hash.
+// - Ensure that the password is being hashed before storing and that the hash comparison logic 
+//   (using bcrypt.compare()) is working as expected.
+// - If passwords are stored incorrectly (e.g., plain text or with an incorrect hashing algorithm), 
+//   the authentication will always fail because the entered password won't match the hashed version in the database.
+// - Double-check the password hashing function (bcrypt.hash) during user registration and ensure it is consistent 
+//   with how it is compared during login (bcrypt.compare).
+
+
+
+    return api.get(`/users`, { params: {email, password }});
 };
