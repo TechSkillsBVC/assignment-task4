@@ -1,4 +1,5 @@
 {
+  "extends": "@expo/tsconfig/tsconfig.base",
   "compilerOptions": {
     "allowSyntheticDefaultImports": true,
     "jsx": "react-native",
@@ -10,7 +11,45 @@
     "noEmit": true,
     "skipLibCheck": true,
     "resolveJsonModule": true,
-    "strict": true
+    "strict": true,
+    "baseUrl": ".",
+    "paths": {
+      "*": ["src/*"],
+      "@components/*": ["src/components/*"],
+      "@pages/*": ["src/pages/*"],
+      "@services/*": ["src/services/*"],
+      "@types/*": ["src/types/*"],
+      "@utils/*": ["src/utils/*"],
+      "@constants/*": ["src/constants/*"],
+      "@context/*": ["src/context/*"]
+    },
+    "esModuleInterop": true,
+    "isolatedModules": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
+    "forceConsistentCasingInFileNames": true,
+    "types": [
+      "react",
+      "react-native",
+      "jest",
+      "node"
+    ],
+    "typeRoots": [
+      "./node_modules/@types",
+      "./src/@types"
+    ]
   },
-  "extends": "expo/tsconfig.base"
+  "include": [
+    "src/**/*",
+    "App.tsx",
+    "src/@types/*.d.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    "babel.config.js",
+    "metro.config.js",
+    "jest.config.js"
+  ]
 }

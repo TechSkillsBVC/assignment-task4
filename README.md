@@ -1,38 +1,111 @@
-# Volunteam App
+# Mobile Application Task 4
 
-## Setting up the fake API (json-server)
+A React Native mobile application with TypeScript, featuring authentication, navigation, map integration, and terminal command utilities.
 
-Update the file `src/services/api.ts`.
+## Author
+Shadman Sakib
 
-Before running your 'json-server', get your computer's IP address and update your baseURL to `http://your_ip_address_here:3333` and then run:
+## Features
 
-```
-npx json-server --watch db.json --port 3333 --host your_ip_address_here -m ./node_modules/json-server-auth
-```
+- User authentication with protected routes
+- Map integration
+- Custom components with TypeScript
+- Terminal command execution support
+- Image upload capabilities via ImgBB
+- Comprehensive testing setup
+- ESLint configuration
+- Error boundary implementation
 
-To access your server online without running json-server locally, you can set your baseURL to:
+## Environment Configuration
 
-```
-https://my-json-server.typicode.com/<your-github-username>/<your-github-repo>
-```
-
-To use `my-json-server`, make sure your `db.json` is located at the repo root.
-
-## Setting up the image upload API
-
-Update the file `src/services/imageApi.ts`.
-
-You can use any hosting service of your preference. In this case, we will use ImgBB API: https://api.imgbb.com/.
-Sign up for free at https://imgbb.com/signup, get your API key and add it to the .env file in your root folder.
-
-To run the app in your local environment, you will need to set the IMGBB_API_KEY when starting the app using:
-
-```
-IMGBB_API_KEY="insert_your_api_key_here" npx expo start
+The application uses the following environment variables:
+```typescript
+API_URL: 'http://192.168.1.86:3000'  // Development server URL
+IMGBB_API_KEY: '9c51a3a2c427154e10112b17e4d5a2e0'  // ImgBB API key
 ```
 
-When creating your app build or publishing, import your secret values to EAS running:
+## Setup Instructions
+
+1. Clone the repository:
+```bash
+git clone https://github.com/shadmansakib/assignment-task4.git
+cd assignment-task4
+```
+
+2. Install dependencies:
+```bash
+yarn install
+```
+
+3. Start the development server:
+```bash
+yarn start
+```
+
+## Pushing to GitHub
+
+1. Initialize Git repository (if not already done):
+```bash
+git init
+```
+
+2. Add all files:
+```bash
+git add .
+```
+
+3. Create initial commit:
+```bash
+git commit -m "Initial commit: Complete mobile application with TypeScript"
+```
+
+4. Add remote repository:
+```bash
+git remote add origin https://github.com/shadmansakib/assignment-task4.git
+```
+
+5. Push to GitHub:
+```bash
+git push -u origin main
+```
+
+## Project Structure
 
 ```
-eas secret:push
+src/
+├── @types/          # TypeScript type definitions
+├── components/      # Reusable UI components
+├── config/          # Environment configuration
+├── constants/       # Application constants
+├── context/         # React Context providers
+├── images/          # Image assets
+├── pages/          # Screen components
+├── routes/         # Navigation configuration
+├── services/       # API and service integrations
+├── types/          # TypeScript interfaces
+└── utils/          # Utility functions including terminal commands
 ```
+
+## Available Scripts
+
+- `yarn start`: Start the development server
+- `yarn android`: Run on Android
+- `yarn ios`: Run on iOS
+- `yarn web`: Run on web browser
+- `yarn test`: Run tests
+- `yarn lint`: Run ESLint
+
+## Testing
+
+The project includes Jest and React Native Testing Library setup. Run tests with:
+```bash
+yarn test
+```
+
+## Documentation
+
+For detailed documentation about the project structure, components, and best practices, see [DOCUMENTATION.md](./DOCUMENTATION.md).
+
+## License
+
+This project is private and not licensed for public use.

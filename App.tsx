@@ -1,5 +1,6 @@
 import React from 'react';
 import { ActionSheetProvider } from '@expo/react-native-action-sheet';
+import { View } from 'react-native';
 
 import {
     useFonts,
@@ -11,6 +12,8 @@ import {
 
 import AppStack from './src/routes/AppStack';
 import { StatusBar } from 'expo-status-bar';
+import { LoadingSpinner } from './src/components/LoadingSpinner';
+import { ErrorBoundary } from './src/components/ErrorBoundary';
 
 export default function App() {
     const [fontsLoaded] = useFonts({
@@ -21,15 +24,17 @@ export default function App() {
     });
 
     if (!fontsLoaded) {
-        return null;
-    } else {
-        return (
-            <>
+        return <LoadingSpinner />;
+    }
+
+    return (
+        <ErrorBoundary>
+            <View style={{ flex: 1 }}>
                 <StatusBar animated translucent style="dark" />
                 <ActionSheetProvider>
                     <AppStack />
                 </ActionSheetProvider>
-            </>
-        );
-    }
+            </View>
+        </ErrorBoundary>
+    );
 }
