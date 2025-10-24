@@ -41,13 +41,25 @@ export const sanitizeEmail = (email: string): string => {
     return email.trim().toLowerCase();
 };
 
+// export const validateEmail = (email: string): boolean => {
+//     if (!email) return false;
+//     const regex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{3})+$/;
+//     const sanitizedEmail = email.trim().toLowerCase();
+//     const result = sanitizedEmail.match(regex);
+//     return !!result?.[0];
+// };
+
 export const validateEmail = (email: string): boolean => {
     if (!email) return false;
-    const regex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{3})+$/;
+    // Accept common valid emails:
+    // - letters, numbers, ., _, %, +, - in local part
+    // - letters, numbers, ., - in domain
+    // - TLD is letters only, at least 2 chars
+    const regex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
     const sanitizedEmail = email.trim().toLowerCase();
-    const result = sanitizedEmail.match(regex);
-    return !!result?.[0];
+    return regex.test(sanitizedEmail);
 };
+
 
 export const parseDateFieldFromJSONResponse = (array: [], fieldName: string): any[] => {
     return array.map((x: any) => {
