@@ -5,8 +5,24 @@
         "android": "expo start --android",
         "ios": "expo start --ios",
         "web": "expo start --web",
-        "eject": "expo eject"
+        "eject": "expo eject",
+        "server": "json-server-auth db.json --port 3001 --watch",
+        "test": "jest"
     },
+ "jest": {
+  "preset": "jest-expo",
+  "setupFilesAfterEnv": [
+    "<rootDir>/jest-setup.ts"
+  ],
+  "testPathIgnorePatterns": [
+    "/node_modules/",
+    "/android/",
+    "/ios/"
+  ],
+  "transformIgnorePatterns": [
+    "node_modules/(?!(@react-native|react-native|react-navigation|@react-navigation|react-native-gesture-handler|react-native-reanimated|@react-native-masked-view|expo(nent)?|@expo|expo-linear-gradient|expo-status-bar|expo-location|expo-constants|expo-modules-core|expo-font|expo-image-picker)/)"
+  ]
+},
     "dependencies": {
         "@expo-google-fonts/nunito": "^0.2.2",
         "@expo/react-native-action-sheet": "^4.0.1",
@@ -43,10 +59,15 @@
         "uuid": "^9.0.0"
     },
     "devDependencies": {
+        "@babel/core": "^7.20.0",
+        "@types/jest": "^30.0.0",
         "@types/react": "~18.0.24",
         "@types/react-dom": "~18.0.8",
         "@types/react-native": "~0.70.6",
         "@types/uuid": "^9.0.0",
+        "babel-jest": "29.7.0",
+        "jest": "29.7.0",
+        "jest-expo": "47.0.1",
         "typescript": "^4.6.3"
     },
     "private": true
