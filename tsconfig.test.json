@@ -1,0 +1,12 @@
+{
+  "compilerOptions": {
+    "target": "ES2019",
+    "module": "CommonJS",
+    "esModuleInterop": true,
+    "moduleResolution": "Node",
+    "strict": false,
+    "skipLibCheck": true,
+    "baseUrl": "."
+  },
+  "include": ["src/tests/**/*.ts", "src/utils/**/*.ts"]
+}

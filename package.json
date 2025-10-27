@@ -1,11 +1,14 @@
 {
   "main": "node_modules/expo/AppEntry.js",
-  "scripts": {
-    "start": "expo start",
-    "android": "expo start --android",
-    "ios": "expo start --ios",
-    "web": "expo start --web",
-    "eject": "expo eject"
+"scripts": {
+  "start": "expo start",
+  "android": "expo start --android",
+  "ios": "expo start --ios",
+  "web": "expo start --web",
+  "eject": "expo eject",
+  "test": "jest",
+  "unit:test": "ts-node -P tsconfig.test.json src/tests/emailValidation.ts"
+
   },
   "dependencies": {
     "@expo-google-fonts/nunito": "^0.2.2",
@@ -44,10 +47,25 @@
     "uuid": "^9.0.0"
   },
   "devDependencies": {
+    "@testing-library/jest-native": "^5.4.3",
+    "@types/jest": "^30.0.0",
     "@types/react": "~19.1.10",
     "@types/react-dom": "~19.1.7",
     "@types/uuid": "^9.0.0",
+    "jest": "^30.2.0",
+    "jest-expo": "^54.0.13",
+    "ts-jest": "^29.4.5",
+    "ts-node": "^10.9.2",
     "typescript": "~5.9.2"
+  },
+  "jest": {
+    "preset": "jest-expo",
+    "transformIgnorePatterns": [
+      "node_modules/(?!((jest-)?react-native|@react-native(-community)?)/)"
+    ],
+    "setupFilesAfterEnv": [
+      "<rootDir>/jest.setup.js"
+    ]
   },
   "private": true
 }
