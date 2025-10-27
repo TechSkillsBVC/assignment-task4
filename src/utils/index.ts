@@ -3,6 +3,9 @@ import jwtDecode, { JwtPayload } from 'jwt-decode';
 import { Platform } from 'react-native';
 import { LatLng } from 'react-native-maps';
 
+export * from './email';
+
+
 export const formatBytes = (bytes: number, decimals = 2): string => {
     if (!+bytes) return '0 Bytes';
 
@@ -41,12 +44,23 @@ export const sanitizeEmail = (email: string): string => {
     return email.trim().toLowerCase();
 };
 
+// export const validateEmail = (email: string): boolean => {
+//     if (!email) return false;
+//     const regex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{3})+$/;
+//     const sanitizedEmail = email.trim().toLowerCase();
+//     const result = sanitizedEmail.match(regex);
+//     return !!result?.[0];
+// };
+
 export const validateEmail = (email: string): boolean => {
-    if (!email) return false;
-    const regex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{3})+$/;
-    const sanitizedEmail = email.trim().toLowerCase();
-    const result = sanitizedEmail.match(regex);
-    return !!result?.[0];
+  if (!email) return false;
+
+  const sanitizedEmail = email.trim().toLowerCase();
+
+  // new regex to allow multi-part email domains
+  const regex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i;
+
+  return regex.test(sanitizedEmail);
 };
 
 export const parseDateFieldFromJSONResponse = (array: [], fieldName: string): any[] => {

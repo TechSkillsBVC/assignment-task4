@@ -14,3 +14,4 @@ web-build/
 
 # environment variables
 .env
+.expo/
