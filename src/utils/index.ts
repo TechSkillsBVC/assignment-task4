@@ -43,7 +43,12 @@ export const sanitizeEmail = (email: string): string => {
 
 export const validateEmail = (email: string): boolean => {
     if (!email) return false;
-    const regex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{3})+$/;
+    // The local part and the domain can be anything but whitespace or '@';
+    // the address must end in a dot followed by a 2+ letter TLD. This allows
+    // real-world addresses the previous regex rejected, such as two-letter
+    // TLDs (carluccio.it), multi-level domains (silva.com.br), TLDs longer
+    // than three letters (example.info), and plus-addressing (user+tag@...).
+    const regex = /^[^\s@]+@[^\s@]+\.[A-Za-z]{2,}$/;
     const sanitizedEmail = email.trim().toLowerCase();
     const result = sanitizedEmail.match(regex);
     return !!result?.[0];

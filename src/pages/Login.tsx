@@ -117,6 +117,7 @@ export default function Login({ navigation }: StackScreenProps<any>) {
                     {emailIsInvalid && <Text style={styles.error}>invalid email</Text>}
                 </View>
                 <TextInput
+                    testID="email-input"
                     style={[styles.input, emailIsInvalid && styles.invalid]}
                     onChangeText={(value) => setEmail(value)}
                     onEndEditing={isEmailInvalid}
