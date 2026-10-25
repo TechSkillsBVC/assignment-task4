@@ -20,7 +20,7 @@ export const formatAMPM = (date: Date): string => {
     const hours = dateObj.getHours();
     const minutes = dateObj.getMinutes();
     const ampm = hours >= 12 ? 'pm' : 'am';
-    const newHours = hours % 12 ? hours : 12; // the hour '0' should be '12'
+    const newHours = hours % 12 || 12; // the hour '0' should be '12'
     const newMinutes = minutes < 10 ? '0' + minutes : minutes;
     var strTime = newHours + ':' + newMinutes + ' ' + ampm;
     return strTime;
@@ -43,7 +43,7 @@ export const sanitizeEmail = (email: string): string => {
 
 export const validateEmail = (email: string): boolean => {
     if (!email) return false;
-    const regex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{3})+$/;
+    const regex = /^[\w+]+([\.-]?[\w+]+)*@\w+([\.-]?\w+)*(\.\w{2,})+$/;
     const sanitizedEmail = email.trim().toLowerCase();
     const result = sanitizedEmail.match(regex);
     return !!result?.[0];
@@ -81,11 +81,11 @@ export const getMapsUrl = (coordinates: LatLng): string => {
 };
 
 export const isTokenExpired = (token: string) => {
-    const decodedToken = jwtDecode(token) as JwtPayload;
-    const currentDate = Date.now();
-    if ((decodedToken.exp as number) * 1000 < currentDate) {
+    try {
+        const decodedToken = jwtDecode(token) as JwtPayload;
+        if (!decodedToken.exp) return true;
+        return decodedToken.exp * 1000 < Date.now();
+    } catch (e) {
         return true;
-    } else {
-        return false;
     }
 };
