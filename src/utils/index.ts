@@ -43,7 +43,8 @@ export const sanitizeEmail = (email: string): string => {
 
 export const validateEmail = (email: string): boolean => {
     if (!email) return false;
-    const regex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{3})+$/;
+    //Modified regex to be more inclusive of email extensions for country codes.
+    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
     const sanitizedEmail = email.trim().toLowerCase();
     const result = sanitizedEmail.match(regex);
     return !!result?.[0];
