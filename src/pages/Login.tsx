@@ -13,7 +13,7 @@ import logoImg from '../images/logo.png';
 import * as api from '../services/api';
 import { getFromCache, setInCache } from '../services/caching';
 import { User } from '../types/User';
-import { isTokenExpired, sanitizeEmail, validateEmail } from '../utils';
+import { isTokenExpired, sanitizeEmail, shouldNavigateToEventsMap, validateEmail, validateLoginCredentials } from '../utils';
 
 export default function Login({ navigation }: StackScreenProps<any>) {
     const authenticationContext = useContext(AuthenticationContext);
@@ -41,8 +41,8 @@ export default function Login({ navigation }: StackScreenProps<any>) {
     }, [authError]);
 
     useEffect(() => {
-        if (accessTokenIsValid && authenticationContext?.value) navigation.navigate('EventsMap');
-    }, [accessTokenIsValid]);
+        if (shouldNavigateToEventsMap(accessTokenIsValid, authenticationContext?.value)) navigation.navigate('EventsMap');
+    }, [accessTokenIsValid, authenticationContext?.value]);
 
     const handleAuthentication = () => {
         if (formIsValid()) {
@@ -53,7 +53,7 @@ export default function Login({ navigation }: StackScreenProps<any>) {
                     setInCache('accessToken', response.data.accessToken);
                     authenticationContext?.setValue(response.data.user);
                     setIsAuthenticating(false);
-                    123;
+                    // 123;
                     navigation.navigate('EventsMap');
                 })
                 .catch((error) => {
@@ -68,21 +68,22 @@ export default function Login({ navigation }: StackScreenProps<any>) {
     };
 
     const formIsValid = () => {
-        const emailIsValid = !isEmailInvalid();
-        const passwordIsValid = !isPasswordInvalid();
-        return emailIsValid && passwordIsValid;
+        const validation = validateLoginCredentials(email, password);
+        setEmailIsInvalid(!validation.emailIsValid);
+        setPasswordIsInvalid(!validation.passwordIsValid);
+        return validation.isValid;
     };
 
     const isPasswordInvalid = (): boolean => {
-        const invalidCheck = password.length < 6;
+        const invalidCheck = !validateLoginCredentials(email, password).passwordIsValid;
         setPasswordIsInvalid(invalidCheck);
-        return invalidCheck ? true : false;
+        return invalidCheck;
     };
 
     const isEmailInvalid = (): boolean => {
         const invalidCheck = !validateEmail(email);
         setEmailIsInvalid(invalidCheck);
-        return invalidCheck ? true : false;
+        return invalidCheck;
     };
 
     return (

@@ -20,7 +20,7 @@ export const formatAMPM = (date: Date): string => {
     const hours = dateObj.getHours();
     const minutes = dateObj.getMinutes();
     const ampm = hours >= 12 ? 'pm' : 'am';
-    const newHours = hours % 12 ? hours : 12; // the hour '0' should be '12'
+    const newHours = hours % 12 || 12; // the hour '0' should be '12'
     const newMinutes = minutes < 10 ? '0' + minutes : minutes;
     var strTime = newHours + ':' + newMinutes + ' ' + ampm;
     return strTime;
@@ -43,10 +43,25 @@ export const sanitizeEmail = (email: string): string => {
 
 export const validateEmail = (email: string): boolean => {
     if (!email) return false;
-    const regex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{3})+$/;
+    const regex = /^(?=.{1,254}$)(?=.{1,64}@)[A-Za-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[A-Za-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[A-Za-z0-9](?:[A-Za-z0-9-]{0,61}[A-Za-z0-9])?\.)+(?:[A-Za-z]{2,63}|xn--[A-Za-z0-9-]{2,59})$/   ;
     const sanitizedEmail = email.trim().toLowerCase();
     const result = sanitizedEmail.match(regex);
     return !!result?.[0];
+};
+
+export const validateLoginCredentials = (email: string, password: string) => {
+    const emailIsValid = validateEmail(email);
+    const passwordIsValid = password.length >= 6;
+
+    return {
+        emailIsValid,
+        passwordIsValid,
+        isValid: emailIsValid && passwordIsValid,
+    };
+};
+
+export const shouldNavigateToEventsMap = (accessTokenIsValid: boolean, user: unknown): boolean => {
+    return accessTokenIsValid && Boolean(user);
 };
 
 export const parseDateFieldFromJSONResponse = (array: [], fieldName: string): any[] => {
@@ -81,11 +96,15 @@ export const getMapsUrl = (coordinates: LatLng): string => {
 };
 
 export const isTokenExpired = (token: string) => {
-    const decodedToken = jwtDecode(token) as JwtPayload;
-    const currentDate = Date.now();
-    if ((decodedToken.exp as number) * 1000 < currentDate) {
+    try {
+        const decodedToken = jwtDecode(token) as JwtPayload | null;
+        if (!decodedToken || !('exp' in decodedToken)) return true;
+
+        const expiration = Number(decodedToken.exp);
+        if (!Number.isFinite(expiration)) return true;
+
+        return expiration * 1000 < Date.now();
+    } catch (e) {
         return true;
-    } else {
-        return false;
     }
 };
