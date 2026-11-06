@@ -4,13 +4,16 @@ import { Platform } from 'react-native';
 import { LatLng } from 'react-native-maps';
 
 export const formatBytes = (bytes: number, decimals = 2): string => {
-    if (!+bytes) return '0 Bytes';
+    if (!+bytes || bytes <= 0) return '0 Bytes';
 
     const k = 1024;
     const dm = decimals < 0 ? 0 : decimals;
     const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
 
-    const i = Math.floor(Math.log(bytes) / Math.log(k));
+    const i = Math.min(
+        Math.floor(Math.log(bytes) / Math.log(k)),
+        sizes.length - 1
+    );
 
     return `${parseFloat((bytes / Math.pow(k, i)).toFixed(dm))} ${sizes[i]}`;
 };
@@ -20,7 +23,7 @@ export const formatAMPM = (date: Date): string => {
     const hours = dateObj.getHours();
     const minutes = dateObj.getMinutes();
     const ampm = hours >= 12 ? 'pm' : 'am';
-    const newHours = hours % 12 ? hours : 12; // the hour '0' should be '12'
+    const newHours = hours % 12 || 12; // the hour '0' should be '12' 
     const newMinutes = minutes < 10 ? '0' + minutes : minutes;
     var strTime = newHours + ':' + newMinutes + ' ' + ampm;
     return strTime;
@@ -43,7 +46,7 @@ export const sanitizeEmail = (email: string): string => {
 
 export const validateEmail = (email: string): boolean => {
     if (!email) return false;
-    const regex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{3})+$/;
+    const regex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,})+$/;
     const sanitizedEmail = email.trim().toLowerCase();
     const result = sanitizedEmail.match(regex);
     return !!result?.[0];
@@ -80,12 +83,14 @@ export const getMapsUrl = (coordinates: LatLng): string => {
     return Platform.OS === 'ios' ? `maps:0,0?q=${label}@${latLng}` : `geo:0,0?q=${latLng}(${label})`;
 };
 
-export const isTokenExpired = (token: string) => {
+export const isTokenExpired = (token: string): boolean => {
+  if (!token) return true;
+  try {
     const decodedToken = jwtDecode(token) as JwtPayload;
+    if (!decodedToken?.exp) return true;
     const currentDate = Date.now();
-    if ((decodedToken.exp as number) * 1000 < currentDate) {
-        return true;
-    } else {
-        return false;
-    }
+    return decodedToken.exp * 1000 < currentDate;
+  } catch {
+    return true;
+  }
 };
