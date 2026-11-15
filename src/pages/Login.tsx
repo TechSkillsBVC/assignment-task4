@@ -28,40 +28,69 @@ export default function Login({ navigation }: StackScreenProps<any>) {
     const isFocused = useIsFocused();
 
     useEffect(() => {
+        if (isFocused) {
+            setEmail('');
+            setPassword('');
+            setEmailIsInvalid(undefined);
+            setPasswordIsInvalid(undefined);
+            setAuthError(undefined);
+        }
+    }, [isFocused]);
+
+    useEffect(() => {
         getFromCache('userInfo').then(
             (cachedUserInfo) => authenticationContext?.setValue(cachedUserInfo as User),
             (error: any) => console.log(error)
         );
+
         getFromCache('accessToken').then(
-            (accessToken) => accessToken && !isTokenExpired(accessToken as string) && setAccessTokenIsValid(true),
+            (accessToken) =>
+                accessToken &&
+                !isTokenExpired(accessToken as string) &&
+                setAccessTokenIsValid(true),
             (error: any) => console.log(error)
         );
-        if (authError)
-            Alert.alert('Authentication Error', authError, [{ text: 'Ok', onPress: () => setAuthError(undefined) }]);
+
+        if (authError) {
+            Alert.alert('Authentication Error', authError, [
+                { text: 'Ok', onPress: () => setAuthError(undefined) },
+            ]);
+        }
     }, [authError]);
 
     useEffect(() => {
-        if (accessTokenIsValid && authenticationContext?.value) navigation.navigate('EventsMap');
+        if (accessTokenIsValid && authenticationContext?.value) {
+            navigation.navigate('EventsMap');
+        }
     }, [accessTokenIsValid]);
 
     const handleAuthentication = () => {
         if (formIsValid()) {
             setIsAuthenticating(true);
+
             api.authenticateUser(sanitizeEmail(email), password)
                 .then((response) => {
                     setInCache('userInfo', response.data.user);
                     setInCache('accessToken', response.data.accessToken);
                     authenticationContext?.setValue(response.data.user);
                     setIsAuthenticating(false);
-                    123;
                     navigation.navigate('EventsMap');
                 })
                 .catch((error) => {
                     if (error.response) {
-                        setAuthError(error.response.data);
+                        setAuthError(
+                            typeof error.response.data === 'string'
+                                ? error.response.data
+                                : 'Authentication failed. Please try again.'
+                        );
+                    } else if (error.request) {
+                        setAuthError(
+                            'Network Error. Please check your internet connection and try again.'
+                        );
                     } else {
-                        setAuthError('Something went wrong.');
+                        setAuthError('Something went wrong. Please try again.');
                     }
+
                     setIsAuthenticating(false);
                 });
         }
@@ -70,18 +99,21 @@ export default function Login({ navigation }: StackScreenProps<any>) {
     const formIsValid = () => {
         const emailIsValid = !isEmailInvalid();
         const passwordIsValid = !isPasswordInvalid();
+
         return emailIsValid && passwordIsValid;
     };
 
     const isPasswordInvalid = (): boolean => {
         const invalidCheck = password.length < 6;
         setPasswordIsInvalid(invalidCheck);
+
         return invalidCheck ? true : false;
     };
 
     const isEmailInvalid = (): boolean => {
         const invalidCheck = !validateEmail(email);
         setEmailIsInvalid(invalidCheck);
+
         return invalidCheck ? true : false;
     };
 
@@ -93,6 +125,7 @@ export default function Login({ navigation }: StackScreenProps<any>) {
             style={styles.gradientContainer}
         >
             {isFocused && <StatusBar animated translucent style="light" />}
+
             <KeyboardAwareScrollView
                 style={styles.container}
                 contentContainerStyle={{
@@ -111,12 +144,16 @@ export default function Login({ navigation }: StackScreenProps<any>) {
                     }}
                     source={logoImg}
                 />
+
                 <Spacer size={80} />
+
                 <View style={styles.inputLabelRow}>
                     <Text style={styles.label}>Email</Text>
                     {emailIsInvalid && <Text style={styles.error}>invalid email</Text>}
                 </View>
+
                 <TextInput
+                    testID="email-input"
                     style={[styles.input, emailIsInvalid && styles.invalid]}
                     onChangeText={(value) => setEmail(value)}
                     onEndEditing={isEmailInvalid}
@@ -124,22 +161,30 @@ export default function Login({ navigation }: StackScreenProps<any>) {
 
                 <View style={styles.inputLabelRow}>
                     <Text style={styles.label}>Password</Text>
-                    {passwordIsInvalid && <Text style={styles.error}>invalid password</Text>}
+                    {passwordIsInvalid && (
+                        <Text style={styles.error}>invalid password</Text>
+                    )}
                 </View>
+
                 <TextInput
+                    testID="password-input"
                     style={[styles.input, passwordIsInvalid && styles.invalid]}
                     secureTextEntry={true}
                     onChangeText={(value) => setPassword(value)}
                     onEndEditing={isPasswordInvalid}
                 />
+
                 <Spacer size={80} />
+
                 <BigButton
-    style={{ marginBottom: 8 }}
-    onPress={handleAuthentication}
-    label="Log in"
-    color="#FF8700"
-    disabled={isAuthenticating}
-/>
+                    testID="login-button"
+                    style={{ marginBottom: 8 }}
+                    onPress={handleAuthentication}
+                    label="Log in"
+                    color="#FF8700"
+                    disabled={isAuthenticating}
+                />
+
                 <Spinner
                     visible={isAuthenticating}
                     textContent={'Authenticating...'}

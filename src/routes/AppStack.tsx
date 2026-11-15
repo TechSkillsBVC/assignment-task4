@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import CreateEvent from '../pages/CreateEvent';
 
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -30,6 +31,7 @@ export default function Routes() {
                     <Screen name="Login" component={Login} />
 
                     <Screen name="EventsMap" component={EventsMap} />
+                    <Screen name="CreateEvent" component={CreateEvent} />
                 </Navigator>
             </NavigationContainer>
         </AuthenticationContext.Provider>

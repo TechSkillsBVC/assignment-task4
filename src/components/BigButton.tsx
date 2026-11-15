@@ -9,20 +9,29 @@ interface BigButtonProps {
     style?: {};
     featherIconName?: keyof typeof Feather.glyphMap;
     disabled?: boolean;
+    testID?: string;
     onPress: () => void;
 }
 
 export default function BigButton(props: BigButtonProps) {
     const styles = styling(props);
-    const { featherIconName, label, style, onPress } = props;
+    const { featherIconName, label, style, onPress, testID } = props;
 
     return (
         <RectButton
-    style={[styles.button, style]}
-    onPress={onPress}
-    enabled={!props.disabled}
->
-            {featherIconName && <Feather style={styles.icon} name={featherIconName} size={24} color="#FFF" />}
+            testID={testID}
+            style={[styles.button, style]}
+            onPress={onPress}
+            enabled={!props.disabled}
+        >
+            {featherIconName && (
+                <Feather
+                    style={styles.icon}
+                    name={featherIconName}
+                    size={24}
+                    color="#FFF"
+                />
+            )}
             <Text style={styles.label}>{label}</Text>
         </RectButton>
     );
@@ -36,17 +45,14 @@ const styling = ({ color, disabled }: BigButtonProps) =>
             backgroundColor: disabled ? color + '80' : color,
             borderRadius: 16,
             maxHeight: 56,
-
             flexDirection: 'row',
             justifyContent: 'center',
             alignItems: 'center',
             flex: 1,
         },
-
         icon: {
             marginRight: 8,
         },
-
         label: {
             fontFamily: 'Nunito_800ExtraBold',
             color: '#FFF',

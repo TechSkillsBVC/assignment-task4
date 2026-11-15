@@ -1,3 +1,4 @@
+import 'dotenv/config';
 import { ExpoConfig, ConfigContext } from 'expo/config';
 
 export default ({ config }: ConfigContext): ExpoConfig => ({
@@ -19,6 +20,14 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
     ios: {
         supportsTablet: true,
     },
+    android: {
+    package: 'com.anonymous.volunteam',
+    config: {
+        googleMaps: {
+            apiKey: process.env.GOOGLE_MAPS_API_KEY || '',
+        },
+    },
+},
     web: {
         favicon: './assets/favicon.png',
     },
