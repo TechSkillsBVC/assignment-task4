@@ -26,6 +26,14 @@ describe('Email Utility Tests', () => {
         expect(validateEmail('test@example.ca')).toBe(true);
     });
 
+    test('should accept Luigi Carluccio email', () => {
+        expect(validateEmail('luigi@carluccio.it')).toBe(true);
+    });
+
+    test('should accept John Silva email', () => {
+        expect(validateEmail('john@silva.com.br')).toBe(true);
+    });
+
     test('should reject an email without @', () => {
         expect(validateEmail('testexample.com')).toBe(false);
     });
