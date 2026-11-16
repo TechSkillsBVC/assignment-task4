@@ -43,7 +43,9 @@ export const sanitizeEmail = (email: string): string => {
 
 export const validateEmail = (email: string): boolean => {
     if (!email) return false;
-    const regex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{3})+$/;
+    //original regex, did not allow for any domain extensions longer or shorter than 3 characters, which is not valid anymore
+    //const regex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{3})+$/;
+    const regex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,})+$/;
     const sanitizedEmail = email.trim().toLowerCase();
     const result = sanitizedEmail.match(regex);
     return !!result?.[0];
